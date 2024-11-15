@@ -28,6 +28,7 @@ class RegisterRequest extends FormRequest
             'prenom' => 'required|min:3',
             'username' => 'required|string|min:4|unique:users',
             'email' => 'required|email|unique:users',
+            'role' => 'required|string|in:user,admin,chefservice,magasinier',
             'password' => 'required|min:4',
         ];
     }
