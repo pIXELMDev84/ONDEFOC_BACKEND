@@ -19,6 +19,7 @@ class AuthController extends Controller
         'prenom' => $request->nom,
         'username' => $request->username,
         'email' => $request->email,
+        'role' => $request->role,
         'password' => Hash::make($request->password),
     ];
 
