@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Fournisseur;
+use App\Models\Categorie;
 
 use Illuminate\Http\Request;
 

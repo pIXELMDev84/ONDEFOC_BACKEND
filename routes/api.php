@@ -27,6 +27,6 @@ Route::get('/users', [UserController::class, 'index']);
 Route::delete('/users/{user}', [UserController::class, 'destroy']);
 //fournissuer
 Route::get('fournisseurs', [FournisseurController::class, 'index']);
-Route::post('fournisseurs', [FournisseurController::class, 'store']);
+Route::post('fournisseurs/register', [FournisseurController::class, 'store']);
 Route::put('fournisseurs/{fournisseur}', [FournisseurController::class, 'update']);
 Route::delete('fournisseurs/{fournisseur}', [FournisseurController::class, 'destroy']);
