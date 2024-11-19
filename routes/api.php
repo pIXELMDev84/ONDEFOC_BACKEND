@@ -14,6 +14,7 @@ use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\BonDeCommandeController;
 
 
+
 Route::middleware('auth:sanctum')->get('user', function (Request $request) {
     return $request->user();
 });
@@ -30,3 +31,5 @@ Route::delete('/fournisseurs/{fournisseur}', [FournisseurController::class, 'des
 //Bon De Commande
 Route::post('/bdcm', [BonDeCommandeController::class, 'store']);
 Route::get('/abdcm', [BonDeCommandeController::class, 'index']);
+Route::get('/bdcm/{id}/pdf', [BonDeCommandeController::class, 'telechargerPDF'])->name('bons.pdf');
+

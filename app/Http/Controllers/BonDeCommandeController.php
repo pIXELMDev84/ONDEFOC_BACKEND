@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\BonDeCommande;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class BonDeCommandeController extends Controller
 {
@@ -57,5 +59,17 @@ class BonDeCommandeController extends Controller
             'message' => 'Bon de commande créé avec succès',
             'bon_de_commande' => $bonDeCommande
         ], 201);
+    }
+
+    public function telechargerPDF($id)
+    {
+        // Récupérer le bon de commande par son ID
+        $bon = BonDeCommande::findOrFail($id);
+
+        // Charger une vue pour le PDF
+        $pdf = Pdf::loadView('bons.pdf', ['bon' => $bon]);
+
+        // Télécharger le fichier PDF
+        return $pdf->download("Bon_de_commande_{$bon->id}.pdf");
     }
 }
