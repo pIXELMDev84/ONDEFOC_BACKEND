@@ -27,5 +27,6 @@ Route::get('/fournisseurs', [FournisseurController::class, 'index']);
 Route::post('/fournisseurs/register', [FournisseurController::class, 'store']);
 Route::put('/fournisseurs/{fournisseur}', [FournisseurController::class, 'update']);
 Route::delete('/fournisseurs/{fournisseur}', [FournisseurController::class, 'destroy']);
-
+//Bon De Commande
 Route::post('/bdcm', [BonDeCommandeController::class, 'store']);
+Route::get('/abdcm', [BonDeCommandeController::class, 'index']);

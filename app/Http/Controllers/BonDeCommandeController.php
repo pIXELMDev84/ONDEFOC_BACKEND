@@ -7,6 +7,16 @@ use App\Models\BonDeCommande;
 
 class BonDeCommandeController extends Controller
 {
+
+
+    public function index()
+    {
+    // Récupérer tous les bons de commande avec les informations du fournisseur
+      $bonsDeCommande = BonDeCommande::with('fournisseur')->get();
+
+      return response()->json($bonsDeCommande);
+    }
+
     public function store(Request $request)
     {
         // Validation des données envoyées par le frontend
