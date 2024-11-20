@@ -295,6 +295,10 @@ return [
          * @var bool
          */
         'enable_html5_parser' => true,
+        'base_path' => realpath(public_path()),
+        'remote_enabled' => true,
+
+
     ],
 
 ];

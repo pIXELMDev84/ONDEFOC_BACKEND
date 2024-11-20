@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,8 +10,30 @@
             margin: 20px;
         }
         .header {
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid black;
+            padding-bottom: 10px;
             margin-bottom: 20px;
+        }
+        .logo-left img, .logo-right img {
+            height: 80px;
+        }
+        .header-center {
+            text-align: center;
+        }
+        .header-center h1 {
+            font-size: 18px;
+            margin: 5px 0;
+        }
+        .header-center h2 {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+        .header-center h3 {
+            font-size: 14px;
+            margin: 5px 0;
         }
         .details, .products {
             margin-bottom: 20px;
@@ -31,14 +53,21 @@
 </head>
 <body>
     <div class="header">
-        <h1>Bon de Commande</h1>
+        <div class="header-center">
+            <h1>RÉPUBLIQUE ALGÉRIENNE DÉMOCRATIQUE ET POPULAIRE</h1>
+            <h2>MINISTÈRE DE LA FORMATION ET DE L'ENSEIGNEMENT PROFESSIONNELS</h2>
+            <h3>OFFICE NATIONAL DE DÉVELOPPEMENT ET DE PROMOTION DE LA FORMATION CONTINUE</h3>
+        </div>
+
     </div>
+
     <div class="details">
         <p><strong>Code :</strong> {{ $bon->code }}</p>
         <p><strong>Fournisseur :</strong> {{ $bon->fournisseur->nom }}</p>
         <p><strong>Téléphone du Fournisseur :</strong> {{ $bon->fournisseur->num_telephone }}</p>
         <p><strong>Date :</strong> {{ $bon->date }}</p>
     </div>
+
     <div class="products">
         <table>
             <thead>
