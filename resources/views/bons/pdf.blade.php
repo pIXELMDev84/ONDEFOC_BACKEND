@@ -17,30 +17,31 @@
             padding-bottom: 10px;
             margin-bottom: 20px;
         }
-        .logo-left img, .logo-right img {
-            height: 80px;
-        }
         .header-center {
             text-align: center;
         }
+        .header-center h1, .header-center h2, .header-center h3 {
+            margin: 5px 0;
+        }
         .header-center h1 {
             font-size: 18px;
-            margin: 5px 0;
         }
         .header-center h2 {
             font-size: 16px;
-            margin: 5px 0;
         }
         .header-center h3 {
             font-size: 14px;
-            margin: 5px 0;
         }
         .details, .products {
             margin-bottom: 20px;
         }
+        .details p {
+            margin: 5px 0;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
         }
         table, th, td {
             border: 1px solid black;
@@ -48,6 +49,14 @@
         th, td {
             padding: 10px;
             text-align: left;
+        }
+        .totaux {
+            text-align: right;
+            margin-top: 10px;
+        }
+        .totaux p {
+            font-weight: bold;
+            margin: 5px 0;
         }
     </style>
 </head>
@@ -58,7 +67,6 @@
             <h2>MINISTÈRE DE LA FORMATION ET DE L'ENSEIGNEMENT PROFESSIONNELS</h2>
             <h3>OFFICE NATIONAL DE DÉVELOPPEMENT ET DE PROMOTION DE LA FORMATION CONTINUE</h3>
         </div>
-
     </div>
 
     <div class="details">
@@ -70,25 +78,26 @@
 
     <div class="products">
         <table>
-            <thead>
-                <tr>
-                    <th>Produit</th>
-                    <th>Quantité</th>
-                    <th>Prix Unitaire</th>
-                    <th>TVA (%)</th>
-                    <th>Prix Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ $bon->produit_name }}</td>
-                    <td>{{ $bon->quantite }}</td>
-                    <td>{{ number_format($bon->prix_unitaire, 2) }} DA</td>
-                    <td>{{ $bon->tva }}</td>
-                    <td>{{ number_format($bon->prix_total, 2) }} DA</td>
-                </tr>
-            </tbody>
+            <tr>
+                <th>Produit</th>
+                <th>Quantité</th>
+                <th>Prix Unitaire</th>
+                <th>TVA (%)</th>
+                <th>Prix Total</th>
+            </tr>
+            <tr>
+                <td>{{ $bon->produit_name }}</td>
+                <td>{{ $bon->quantite }}</td>
+                <td>{{ number_format($bon->prix_unitaire, 2) }} DA</td>
+                <td>{{ $bon->tva }}</td>
+                <td>{{ number_format($bon->prix_total, 2) }} DA</td>
+            </tr>
         </table>
-    </div>
+        
+        <div class="totaux">
+            <p>Total HT : {{ number_format($total_ht, 2) }} DA</p>
+            <p>TVA ({{ $bon->tva }}%) : {{ number_format($total_tva, 2) }} DA</p>
+            <p><strong>Total TTC : {{ number_format($total_ttc, 2) }} DA</strong></p>
+        </div>
 </body>
 </html>

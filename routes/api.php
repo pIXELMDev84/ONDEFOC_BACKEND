@@ -30,6 +30,7 @@ Route::put('/fournisseurs/{fournisseur}', [FournisseurController::class, 'update
 Route::delete('/fournisseurs/{fournisseur}', [FournisseurController::class, 'destroy']);
 //Bon De Commande
 Route::post('/bdcm', [BonDeCommandeController::class, 'store']);
+Route::delete('/supr/bdcm/{id}', [BonDeCommandeController::class, 'destroy']);
 Route::get('/abdcm', [BonDeCommandeController::class, 'index']);
 Route::get('/bdcm/{id}/pdf', [BonDeCommandeController::class, 'telechargerPDF'])->name('bons.pdf');
 

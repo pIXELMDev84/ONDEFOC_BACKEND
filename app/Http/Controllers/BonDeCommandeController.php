@@ -61,15 +61,49 @@ class BonDeCommandeController extends Controller
         ], 201);
     }
 
-    public function telechargerPDF($id)
-    {
-        // Récupérer le bon de commande par son ID
-        $bon = BonDeCommande::findOrFail($id);
+public function telechargerPDF($id)
+{
+    // Récupérer le bon de commande par son ID
+    $bon = BonDeCommande::with('fournisseur')->findOrFail($id);
 
-        // Charger une vue pour le PDF
-        $pdf = Pdf::loadView('bons.pdf', ['bon' => $bon]);
+    // Recalculer les valeurs nécessaires
+    $quantite = $bon->quantite;
+    $prix_unitaire = $bon->prix_unitaire;
+    $tva = $bon->tva;
 
-        // Télécharger le fichier PDF
-        return $pdf->download("Bon_de_commande_{$bon->id}.pdf");
+    $total_ht = $quantite * $prix_unitaire; // Total hors taxe
+    $total_tva = ($tva / 100) * $total_ht; // Montant de la TVA
+    $total_ttc = $total_ht + $total_tva; // Total TTC
+
+    // Charger une vue pour le PDF avec les totaux calculés
+    $pdf = Pdf::loadView('bons.pdf', [
+        'bon' => $bon,
+        'total_ht' => $total_ht,
+        'total_tva' => $total_tva,
+        'total_ttc' => $total_ttc,
+    ]);
+
+    // Télécharger le fichier PDF
+    return $pdf->download("Bon_de_commande_{$bon->id}.pdf");
+}
+
+    public function destroy($id)
+{
+    // Récupérer le bon de commande par son ID
+    $bonDeCommande = BonDeCommande::find($id);
+
+    // Vérifier si le bon de commande existe
+    if (!$bonDeCommande) {
+        return response()->json([
+            'message' => 'Bon de commande introuvable'
+        ], 404);
     }
+
+    // Supprimer le bon de commande
+    $bonDeCommande->delete();
+
+    return response()->json([
+        'message' => 'Bon de commande supprimé avec succès'
+    ], 200);
+}
 }
