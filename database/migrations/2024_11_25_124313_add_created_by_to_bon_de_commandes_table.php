@@ -9,14 +9,16 @@ return new class extends Migration
     public function up()
     {
         Schema::table('bon_de_commandes', function (Blueprint $table) {
-            $table->decimal('total_ht', 15, 2)->after('prix_total')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');
         });
     }
-    
+
     public function down()
     {
         Schema::table('bon_de_commandes', function (Blueprint $table) {
-            $table->dropColumn('total_ht');
+            $table->dropForeign(['created_by']);
+            $table->dropColumn('created_by');
         });
     }
 };

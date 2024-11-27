@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\BonDeCommande;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
+
 
 
 class BonDeCommandeController extends Controller
@@ -14,7 +16,7 @@ class BonDeCommandeController extends Controller
     public function index()
     {
     // Récupérer tous les bons de commande avec les informations du fournisseur
-      $bonsDeCommande = BonDeCommande::with('fournisseur')->get();
+      $bonsDeCommande = BonDeCommande::with('fournisseur', 'createdBy')->get();
 
       return response()->json($bonsDeCommande);
     }
@@ -29,6 +31,7 @@ class BonDeCommandeController extends Controller
             'prix_unitaire' => 'required|numeric|min:0',
             'tva' => 'required|numeric|min:0|max:100',
             'date' => 'required|date',
+            'unite' => 'nullable|string',
         ]);
 
         // Calcul du prix total avec TVA
@@ -53,6 +56,9 @@ class BonDeCommandeController extends Controller
             'tva' => $tva,
             'prix_total' => $prix_total,
             'date' => $request->date,
+            'unite' => $request->unite,
+            'created_by' => Auth::id(),
+
         ]);
 
         return response()->json([
@@ -60,6 +66,29 @@ class BonDeCommandeController extends Controller
             'bon_de_commande' => $bonDeCommande
         ], 201);
     }
+
+
+
+    public function updateEtat(Request $request, $id)
+{
+    // Valider l'état envoyé
+    $request->validate([
+        'etat' => 'required|in:en_attente,validé',
+    ]);
+
+    // Récupérer le bon de commande
+    $bonDeCommande = BonDeCommande::findOrFail($id);
+
+    // Mettre à jour l'état
+    $bonDeCommande->etat = $request->etat;
+    $bonDeCommande->save();
+
+    return response()->json([
+        'message' => 'L\'état du bon de commande a été mis à jour.',
+        'bon_de_commande' => $bonDeCommande
+    ]);
+}
+
 
 public function telechargerPDF($id)
 {

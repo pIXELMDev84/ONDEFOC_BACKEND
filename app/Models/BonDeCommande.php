@@ -16,7 +16,8 @@ class BonDeCommande extends Model
         'prix_unitaire',
         'tva',
         'prix_total',
-        'date'
+        'date',
+        'unite'
     ];
 
     // Relation avec le fournisseur
@@ -24,4 +25,8 @@ class BonDeCommande extends Model
     {
         return $this->belongsTo(Fournisseur::class);
     }
+    public function createdBy()
+{
+    return $this->belongsTo(User::class, 'created_by');
+}
 }

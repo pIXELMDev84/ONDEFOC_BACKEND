@@ -80,6 +80,7 @@
         <table>
             <tr>
                 <th>Produit</th>
+                <th>Unité</th>
                 <th>Quantité</th>
                 <th>Prix Unitaire</th>
                 <th>TVA (%)</th>
@@ -87,13 +88,14 @@
             </tr>
             <tr>
                 <td>{{ $bon->produit_name }}</td>
+                <td>{{ $bon->unite }}</td>
                 <td>{{ $bon->quantite }}</td>
                 <td>{{ number_format($bon->prix_unitaire, 2) }} DA</td>
                 <td>{{ $bon->tva }}</td>
                 <td>{{ number_format($bon->prix_total, 2) }} DA</td>
             </tr>
         </table>
-        
+
         <div class="totaux">
             <p>Total HT : {{ number_format($total_ht, 2) }} DA</p>
             <p>TVA ({{ $bon->tva }}%) : {{ number_format($total_tva, 2) }} DA</p>

@@ -32,5 +32,7 @@ Route::delete('/fournisseurs/{fournisseur}', [FournisseurController::class, 'des
 Route::post('/bdcm', [BonDeCommandeController::class, 'store']);
 Route::delete('/supr/bdcm/{id}', [BonDeCommandeController::class, 'destroy']);
 Route::get('/abdcm', [BonDeCommandeController::class, 'index']);
+Route::put('/bdcm/{id}/etat', [BonDeCommandeController::class, 'updateEtat']);
 Route::get('/bdcm/{id}/pdf', [BonDeCommandeController::class, 'telechargerPDF'])->name('bons.pdf');
-
+//categories
+Route::get('/categories', [FournisseurController::class, 'getCategories']);
