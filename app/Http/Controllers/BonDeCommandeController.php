@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\BonDeCommande;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Facades\Auth;
 
 
 
@@ -16,7 +15,7 @@ class BonDeCommandeController extends Controller
     public function index()
     {
     // Récupérer tous les bons de commande avec les informations du fournisseur
-      $bonsDeCommande = BonDeCommande::with('fournisseur', 'createdBy')->get();
+      $bonsDeCommande = BonDeCommande::with('fournisseur')->get();
 
       return response()->json($bonsDeCommande);
     }
@@ -57,7 +56,6 @@ class BonDeCommandeController extends Controller
             'prix_total' => $prix_total,
             'date' => $request->date,
             'unite' => $request->unite,
-            'created_by' => Auth::id(),
 
         ]);
 

@@ -25,8 +25,4 @@ class BonDeCommande extends Model
     {
         return $this->belongsTo(Fournisseur::class);
     }
-    public function createdBy()
-{
-    return $this->belongsTo(User::class, 'created_by');
-}
 }
