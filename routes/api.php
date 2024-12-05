@@ -36,3 +36,8 @@ Route::put('/bdcm/{id}/etat', [BonDeCommandeController::class, 'updateEtat']);
 Route::get('/bdcm/{id}/pdf', [BonDeCommandeController::class, 'telechargerPDF'])->name('bons.pdf');
 //categories
 Route::get('/categories', [FournisseurController::class, 'getCategories']);
+//produit
+Route::post('/produits/add', [ProduitController::class, 'store']);
+Route::get('produits', [ProduitController::class, 'getProduits']);
+
+

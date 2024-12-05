@@ -14,6 +14,7 @@ class Fournisseur extends Model
         'prenom',
         'num_telephone',
         'email',
+        'adresse',
     ];
 
     public function categorie()

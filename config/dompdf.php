@@ -266,7 +266,7 @@ return [
          *
          * @var bool
          */
-        'enable_remote' => false,
+        'enable_remote' => true,
 
         /**
          * List of allowed remote hosts
@@ -297,8 +297,7 @@ return [
         'enable_html5_parser' => true,
         'base_path' => realpath(public_path()),
         'remote_enabled' => true,
-
-
+        'DOMPDF_ENABLE_REMOTE' => true,
     ],
 
 ];

@@ -5,13 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\BonDeCommande;
 use Barryvdh\DomPDF\Facade\Pdf;
-
-
+use Carbon\Carbon;
 
 class BonDeCommandeController extends Controller
 {
-
-
     public function index()
     {
     // Récupérer tous les bons de commande avec les informations du fournisseur
@@ -134,3 +131,7 @@ public function telechargerPDF($id)
     ], 200);
 }
 }
+$path =public_path().'/logo.png';
+//$type =pathinfo($path,PATHINFO_EXTENSION);
+//$data =file_get_contents($path);
+//$image ='data:image/'.$type.';base64'.base64_encode($data);
