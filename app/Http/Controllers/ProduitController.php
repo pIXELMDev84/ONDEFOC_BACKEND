@@ -14,6 +14,8 @@ public function store(Request $request)
             'nom' => 'required|string|max:255',
             'tva' => 'required|numeric|min:0|max:100',
             'unite_mesure' => 'required|string|max:50',
+            'categories_id' => 'required|exists:categories,id',
+
         ]);
 
         // Ajout du code produit automatiquement

@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::table('bon_de_commandes', function (Blueprint $table) {
             // Ajout de la colonne 'etat' après 'produit_name' avec la valeur par défaut 'en_attente'
-            $table->string('etat')->default('en_attente')->after('produit_name');
         });
     }
 

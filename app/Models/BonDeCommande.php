@@ -11,18 +11,17 @@ class BonDeCommande extends Model
     protected $fillable = [
         'code',
         'fournisseur_id',
-        'produit_name',
-        'quantite',
-        'prix_unitaire',
-        'tva',
-        'prix_total',
         'date',
-        'unite'
+
     ];
 
     // Relation avec le fournisseur
     public function fournisseur()
     {
         return $this->belongsTo(Fournisseur::class);
+    }
+    public function bondecommande()
+    {
+        return $this->hasMany(BondDeCommandeProduit::class,'bondecommande_id');
     }
 }

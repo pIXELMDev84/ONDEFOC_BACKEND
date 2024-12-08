@@ -12,7 +12,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('bon_de_commandes', function (Blueprint $table) {
-            $table->string('unite')->nullable()->after('produit_name'); // Ajoute la colonne après 'produit_name'
+
         });
     }
 

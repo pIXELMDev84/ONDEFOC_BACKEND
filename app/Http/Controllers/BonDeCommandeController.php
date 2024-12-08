@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BondDeCommandeProduit;
 use Illuminate\Http\Request;
 use App\Models\BonDeCommande;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -20,14 +21,15 @@ class BonDeCommandeController extends Controller
     public function store(Request $request)
     {
         // Validation des données envoyées par le frontend
-        $request->validate([
+        $validated=$request->validate([
             'fournisseur_id' => 'required|exists:fournisseurs,id',
-            'produit_name' => 'required|string|max:255',
-            'quantite' => 'required|integer|min:1',
-            'prix_unitaire' => 'required|numeric|min:0',
-            'tva' => 'required|numeric|min:0|max:100',
+            'produits' => 'required|array|min:1',
+            'produits.*.name' =>'required|string|min:1',
+            'produits.*.quantite' => 'required|integer|min:1',
+            'produits.*.prix_unitaire' => 'required|numeric|min:0',
+            'produits.*.tva' => 'required|numeric|min:0|max:100',
+            'produits.*.unite' =>'required|string|min:1',
             'date' => 'required|date',
-            'unite' => 'nullable|string',
         ]);
 
         // Calcul du prix total avec TVA
@@ -35,30 +37,35 @@ class BonDeCommandeController extends Controller
         $quantite = $request->quantite;
         $tva = $request->tva;
 
-        // Calcul du prix total (prix unitaire * quantité)
-        $prix_total = ($prix_unitaire * $quantite) * (1 + $tva / 100);
+        // Calcul du prix total (prix unitaire * quantité
 
         // Génération du code de bon de commande (par exemple #0001)
         $lastBonDeCommande = BonDeCommande::latest()->first();
         $nextCode = $lastBonDeCommande ? '#'.str_pad(substr($lastBonDeCommande->code, 1) + 1, 4, '0', STR_PAD_LEFT) : '#0001';
 
-        // Création du bon de commande
-        $bonDeCommande = BonDeCommande::create([
+        $bondecommadeId = BonDeCommande::create([
             'code' => $nextCode,
-            'fournisseur_id' => $request->fournisseur_id,
-            'produit_name' => $request->produit_name,
-            'quantite' => $quantite,
-            'prix_unitaire' => $prix_unitaire,
-            'tva' => $tva,
-            'prix_total' => $prix_total,
-            'date' => $request->date,
-            'unite' => $request->unite,
+            'fournisseur_id' => $validated['fournisseur_id']
+
 
         ]);
+        // Création du bon de commande
+            foreach($validated['produits'] as $produit)
+            {
+                $produitdb = new BondDeCommandeProduit();
+                $produitdb->bondecommande_id=$bondecommadeId->id;
+                $produitdb->produit_name = $produit['name'];
+                $produitdb->quantite = $produit['quantite'];
+                $produitdb->prix_unitaire = $produit['prix_unitaire'];
+                $produitdb->tva = $produit['tva'];
+                $produitdb->unite = $produit['unite'];
+                $produitdb->prix_total = ($produit['prix_unitaire'] * $produit['quantite']) * (1 + $produit['tva']/ 100);
+                $produitdb->save();
+            }
 
         return response()->json([
             'message' => 'Bon de commande créé avec succès',
-            'bon_de_commande' => $bonDeCommande
+            'bon_de_commande' => $nextCode
         ], 201);
     }
 
@@ -87,24 +94,42 @@ class BonDeCommandeController extends Controller
 
 public function telechargerPDF($id)
 {
+
+    $imagePath = public_path('images/logo.png');
     // Récupérer le bon de commande par son ID
-    $bon = BonDeCommande::with('fournisseur')->findOrFail($id);
+    $bon = BonDeCommande::with('fournisseur', 'bondecommande')->findOrFail($id);
+
 
     // Recalculer les valeurs nécessaires
-    $quantite = $bon->quantite;
-    $prix_unitaire = $bon->prix_unitaire;
-    $tva = $bon->tva;
+    // $quantite = $bon->quantite;
+    // $prix_unitaire = $bon->prix_unitaire;
+    // $tva = $bon->tva;
+    $total_ht=0;
+    $total_tva=0;
+    $total_ttc=0;
+    foreach($bon->bondecommande as $commande)
+    {
+        $total_ht_unite = $commande['quantite'] * $commande['prix_unitaire'] ;
+        $total_ht+=$commande['quantite'] * $commande['prix_unitaire'] ;
+        $total_tva+=($commande['tva'] /100) * $total_ht_unite;
+    }
 
-    $total_ht = $quantite * $prix_unitaire; // Total hors taxe
-    $total_tva = ($tva / 100) * $total_ht; // Montant de la TVA
+    // $total_ht = $quantite * $prix_unitaire; // Total hors taxe
+    // $total_tva = ($tva / 100) * $total_ht; // Montant de la TVA
     $total_ttc = $total_ht + $total_tva; // Total TTC
+
+    $imageData = base64_encode(file_get_contents($imagePath));
+        $base64Image = 'data:image/png;base64,' . $imageData;
 
     // Charger une vue pour le PDF avec les totaux calculés
     $pdf = Pdf::loadView('bons.pdf', [
-        'bon' => $bon,
+        'bonInfo'=>$bon,
+        'bon' => $bon->bondecommande,
+        'fournisseur' => $bon->fournisseur,
         'total_ht' => $total_ht,
         'total_tva' => $total_tva,
         'total_ttc' => $total_ttc,
+        'base64Image' => $base64Image
     ]);
 
     // Télécharger le fichier PDF

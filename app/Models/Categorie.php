@@ -14,4 +14,8 @@ class Categorie extends Model
     {
         return $this->hasMany(Fournisseur::class);
     }
+    public function produits()
+    {
+        return $this->hasMany(Produit::class);
+    }
 }
