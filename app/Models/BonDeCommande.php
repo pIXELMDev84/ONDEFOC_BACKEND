@@ -15,13 +15,16 @@ class BonDeCommande extends Model
 
     ];
 
+
+
     // Relation avec le fournisseur
     public function fournisseur()
     {
         return $this->belongsTo(Fournisseur::class);
     }
-    public function bondecommande()
+
+    public function bonDecommande()
     {
-        return $this->hasMany(BondDeCommandeProduit::class,'bondecommande_id');
+        return $this->hasMany(BondDeCommandeProduit::class, 'bondecommande_id', 'id');
     }
 }

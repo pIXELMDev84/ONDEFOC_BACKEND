@@ -13,7 +13,7 @@ class BonDeCommandeController extends Controller
     public function index()
     {
     // Récupérer tous les bons de commande avec les informations du fournisseur
-      $bonsDeCommande = BonDeCommande::with('fournisseur')->get();
+      $bonsDeCommande = BonDeCommande::with('fournisseur','bonDecommande')->get();
 
       return response()->json($bonsDeCommande);
     }
@@ -107,6 +107,7 @@ public function telechargerPDF($id)
     $total_ht=0;
     $total_tva=0;
     $total_ttc=0;
+
     foreach($bon->bondecommande as $commande)
     {
         $total_ht_unite = $commande['quantite'] * $commande['prix_unitaire'] ;

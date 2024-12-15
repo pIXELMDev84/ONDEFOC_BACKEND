@@ -12,6 +12,8 @@ use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\BonDeCommandeController;
+use App\Http\Controllers\BonDeReceptionController;
+
 
 
 
@@ -39,5 +41,10 @@ Route::get('/categories', [FournisseurController::class, 'getCategories']);
 //produit
 Route::post('/produits/add', [ProduitController::class, 'store']);
 Route::get('produits', [ProduitController::class, 'getProduits']);
+//Bon De Reseption
+Route::get('/abdrs', [BonDeReceptionController::class, 'index']);
+Route::post('/bdrs', [BonDeReceptionController::class, 'store']);
+Route::get('/bdrs/{id}/pdf', [BonDeReceptionController::class, 'telechargerPDF']);
+Route::delete('/supr/bdrs/{id}', [BonDeReceptionController::class, 'destroy']);
 
 

@@ -8,3 +8,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/bdcm/{id}/pdf', [BonDeCommandeController::class, 'telechargerPDF'])->name('bons.pdf');
+Route::view('/login', 'login');
