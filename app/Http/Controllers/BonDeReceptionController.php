@@ -88,7 +88,7 @@ class BonDeReceptionController extends Controller
         $imagePath = public_path('images/logo.png');
 
         // Récupérer le bon de réception par son ID
-        $bon = BonDeReception::with('fournisseur', 'bonsDeReception')->findOrFail($id);
+        $bon = BonDeReception::with('fournisseur', 'bonsDeReception', 'bonDeCommande')->findOrFail($id);
         // return response()->json(
         //     [
         //             'm'=>$bon
@@ -117,6 +117,7 @@ class BonDeReceptionController extends Controller
             'fournisseur' => $bon->fournisseur,
             'total_quantite' => $total_quantite,
             'base64Image' => $base64Image,
+            'bon_commande_code' => $bon->bonDeCommande->code,
         ]);
 
         // Télécharger le fichier PDF

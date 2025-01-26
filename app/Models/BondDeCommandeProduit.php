@@ -17,4 +17,10 @@ class BondDeCommandeProduit extends Model
         'prix_total',
         'unite'
     ];
+
+    public function bonDeCommande()
+{
+    return $this->belongsTo(BonDeCommande::class, 'bondecommande_id');
+}
+
 }

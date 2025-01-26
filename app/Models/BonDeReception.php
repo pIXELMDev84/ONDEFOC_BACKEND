@@ -28,5 +28,9 @@ class BonDeReception extends Model
 {
     return $this->hasManyThrough(Produit::class, BonDeReceptionProduit::class, 'bon_de_reception_id','id','id','produit_id');
 }
+public function bonDeCommande()
+{
+    return $this->belongsTo(BonDeCommande::class, 'bon_commande_id');
+}
 
 }

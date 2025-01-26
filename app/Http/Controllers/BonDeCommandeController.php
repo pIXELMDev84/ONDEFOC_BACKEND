@@ -10,6 +10,13 @@ use Carbon\Carbon;
 
 class BonDeCommandeController extends Controller
 {
+
+    public function produitsParBonDeCommande($id)
+{
+    $bonDeCommande = BonDeCommande::with('produits')->findOrFail($id);
+    return response()->json($bonDeCommande->produits);
+}
+
     public function index()
     {
     // Récupérer tous les bons de commande avec les informations du fournisseur
@@ -41,7 +48,7 @@ class BonDeCommandeController extends Controller
 
         // Génération du code de bon de commande (par exemple #0001)
         $lastBonDeCommande = BonDeCommande::latest()->first();
-        $nextCode = $lastBonDeCommande ? '#'.str_pad(substr($lastBonDeCommande->code, 1) + 1, 4, '0', STR_PAD_LEFT) : '#0001';
+        $nextCode = $lastBonDeCommande ? '#BC'.str_pad(substr($lastBonDeCommande->code, 1) + 1, 4, '0', STR_PAD_LEFT) : '#BC0001';
 
         $bondecommadeId = BonDeCommande::create([
             'code' => $nextCode,

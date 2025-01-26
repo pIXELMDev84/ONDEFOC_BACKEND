@@ -35,13 +35,13 @@
         <img src="{{ $base64Image }}" alt="Logo">
         <h1>Bon de Réception</h1>
         <p><strong>Code :</strong> {{ $bonInfo->code }}</p>
-        <p><strong>Date :</strong> {{ $bonInfo->date }}</p>
+        <p><strong>Date :</strong> {{ $bonInfo->created_at }}</p>
     </div>
 
     <table class="details">
         <tr>
             <td><strong>Fournisseur :</strong> {{ $fournisseur->nom }}</td>
-            <td><strong>ID Commande :</strong> {{ $bonInfo->bon_commande_id }}</td>
+            <td><strong>Code Commande :</strong> {{ $bon_commande_code }}</td>
         </tr>
     </table>
 
