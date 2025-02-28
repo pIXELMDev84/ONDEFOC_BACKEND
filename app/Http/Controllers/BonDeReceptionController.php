@@ -44,6 +44,7 @@ class BonDeReceptionController extends Controller
             'code' => $nextCode,
             'bon_commande_id' => $validated['bon_commande_id'],
             'fournisseur_id' => $validated['fournisseur_id'],
+            'date' => now(),
         ]);
 
         // Ajout des produits au bon de réception

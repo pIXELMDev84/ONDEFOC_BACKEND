@@ -52,8 +52,8 @@ class BonDeCommandeController extends Controller
 
         $bondecommadeId = BonDeCommande::create([
             'code' => $nextCode,
-            'fournisseur_id' => $validated['fournisseur_id']
-
+            'fournisseur_id' => $validated['fournisseur_id'],
+            'date' => $validated['date']
 
         ]);
         // Création du bon de commande
