@@ -14,12 +14,12 @@ use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\BonDeCommandeController;
 use App\Http\Controllers\BonDeReceptionController;
 
-
-
-
 Route::middleware('auth:sanctum')->get('user', function (Request $request) {
     return $request->user();
 });
+
+//Update Users
+Route::put('/update/users/{id}', [UserController::class, 'update']);
 //enregistrement/login(login/register)
 Route::post('/login', 'App\Http\Controllers\AuthController@login');
 Route::post('/register', 'App\Http\Controllers\AuthController@register');
