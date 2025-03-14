@@ -37,12 +37,12 @@ Route::get('/abdcm', [BonDeCommandeController::class, 'index']);
 Route::put('/bdcm/{id}/etat', [BonDeCommandeController::class, 'updateEtat']);
 Route::get('/bdcm/{id}/pdf', [BonDeCommandeController::class, 'telechargerPDF'])->name('bons.pdf');
 Route::get('/bondecommande/{id}/produits', [BonDeCommandeController::class, 'produitsParBonDeCommande']);
-
 //categories
 Route::get('/categories', [FournisseurController::class, 'getCategories']);
 //produit
 Route::post('/produits/add', [ProduitController::class, 'store']);
-Route::get('produits', [ProduitController::class, 'getProduits']);
+Route::get('/produits', [ProduitController::class, 'getProduits']);
+Route::get('/produits/categorie/{categorieId}', [ProduitController::class, 'getProduitsParCategorie']);
 //Bon De Reseption
 Route::get('/abdrs', [BonDeReceptionController::class, 'index']);
 Route::post('/bdrs', [BonDeReceptionController::class, 'store']);

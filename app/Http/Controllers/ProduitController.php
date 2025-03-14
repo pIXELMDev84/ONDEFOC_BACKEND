@@ -49,5 +49,16 @@ public function store(Request $request)
     {
         return Produit::all();
     }
+    
+    public function getProduitsParCategorie($categorieId)
+    {
+        $produits = Produit::where('categories_id', $categorieId)->get();
+    
+        if ($produits->isEmpty()) {
+            return response()->json(['message' => 'Aucun produit trouvé'], 404);
+        }
+    
+        return response()->json($produits);
+    }
 }
 
