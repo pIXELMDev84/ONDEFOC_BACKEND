@@ -60,5 +60,10 @@ public function store(Request $request)
     
         return response()->json($produits);
     }
+    public function countProduitsParCategorie($categorieId)
+{
+    $count = Produit::where('categories_id', $categorieId)->count();
+    return response()->json(['count' => $count]);
+}
 }
 

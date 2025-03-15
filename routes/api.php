@@ -13,6 +13,7 @@ use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\BonDeCommandeController;
 use App\Http\Controllers\BonDeReceptionController;
+use App\Http\Controllers\StockController;
 
 Route::middleware('auth:sanctum')->get('user', function (Request $request) {
     return $request->user();
@@ -43,10 +44,14 @@ Route::get('/categories', [FournisseurController::class, 'getCategories']);
 Route::post('/produits/add', [ProduitController::class, 'store']);
 Route::get('/produits', [ProduitController::class, 'getProduits']);
 Route::get('/produits/categorie/{categorieId}', [ProduitController::class, 'getProduitsParCategorie']);
+Route::get('/produits/categorie/{id}/count', [ProduitController::class, 'countProduitsParCategorie']);
 //Bon De Reseption
 Route::get('/abdrs', [BonDeReceptionController::class, 'index']);
 Route::post('/bdrs', [BonDeReceptionController::class, 'store']);
 Route::get('/bdrs/{id}/pdf', [BonDeReceptionController::class, 'telechargerPDF']);
 Route::delete('/supr/bdrs/{id}', [BonDeReceptionController::class, 'destroy']);
+//stock
+Route::get('/stock/{categorieId}', [StockController::class, 'getStockByCategory']);
 
+Route::get('/stock-global', [BonDeReceptionController::class, 'show']);
 

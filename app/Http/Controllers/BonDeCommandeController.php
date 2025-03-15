@@ -48,8 +48,9 @@ class BonDeCommandeController extends Controller
 
         // Génération du code de bon de commande (par exemple #0001)
         $lastBonDeCommande = BonDeCommande::latest()->first();
-        $nextCode = $lastBonDeCommande ? '#BC'.str_pad(substr($lastBonDeCommande->code, 1) + 1, 4, '0', STR_PAD_LEFT) : '#BC0001';
-
+        $nextCode = $lastBonDeCommande 
+        ? '#BC' . str_pad((int) substr($lastBonDeCommande->code, 3) + 1, 4, '0', STR_PAD_LEFT) 
+        : '#BC0001';
         $bondecommadeId = BonDeCommande::create([
             'code' => $nextCode,
             'fournisseur_id' => $validated['fournisseur_id'],

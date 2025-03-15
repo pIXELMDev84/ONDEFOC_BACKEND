@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\BondDeCommandeProduit;
 use App\Models\BonDeCommande;
+use App\Models\Categorie;
 use App\Models\Produit;
+use App\Models\Stock;
 use Illuminate\Http\Request;
 use App\Models\BonDeReception;
 use App\Models\BonDeReceptionProduit;
@@ -49,12 +51,7 @@ class BonDeReceptionController extends Controller
 
         // Ajout des produits au bon de réception
         foreach ($validated['produits'] as $produit) {
-
-
-
             $produitexiste = BondDeCommandeProduit::findOrFail($produit['produit_id']);
-
-
             if($produitexiste->bondecommande_id == $bondecommande->id){
                 $prixtotal = $produitexiste->prix_unitaire * $produit['quantite_recu'];
                 $idproduit = Produit::where('nom',$produitexiste->produit_name)->first('id');
@@ -78,12 +75,67 @@ class BonDeReceptionController extends Controller
 
         }
 
+
+        $produits= $bonDeReception->bonsDeReception;
+
+        foreach ($produits as $produit) {
+            $produitexiste = Stock::where('produit_id',$produit->produit_id)->first();
+            if($produitexiste)
+            {
+                $produitexiste->quantite = intval($produitexiste->quantite) + intval($produit->quantite_recu);
+                $produitexiste->save();
+            }
+            else
+            {
+                $category = Produit::where('id',$produit->produit_id)->first();
+                $nouveauStock = new Stock();
+                $nouveauStock->produit_id = $produit->produit_id;
+                $nouveauStock->category_id = $category->categories_id;
+                $nouveauStock->quantite = $produit->quantite_recu;
+                $nouveauStock->save();
+            }
+        }
+
+        
+
         return response()->json([
             'message' => 'Bon de réception créé avec succès',
             'bon_de_reception' => $nextCode,
         ], 201);
+
+
+
     }
 
+
+
+    public function show(Request $request)
+    {
+        $categories = Categorie::with('stock.produit')->get();
+
+    if ($categories->isEmpty()) {
+        return response()->json(['error' => 'No categories found'], 404);
+    }
+
+    return response()->json([
+        'categories' => $categories->map(function ($category) {
+            return [
+                'id' => $category->id,
+                'name' => $category->name,
+                'products' => $category->stock->map(function ($stock) {
+                    return [
+                        'id' => $stock->produit->id,
+                        'name' => $stock->produit->nom, 
+                        'quantite' => $stock->quantite
+                    ];
+                })
+            ];
+        })
+    ]);
+    }
+
+
+    //fonction
     public function telechargerPDF($id)
     {
         $imagePath = public_path('images/logo.png');
@@ -136,7 +188,10 @@ class BonDeReceptionController extends Controller
 
         // Supprimer le bon de réception
         $bonDeReception->delete();
-
         return response()->json(['message' => 'Bon de réception supprimé avec succès'], 200);
     }
+
+
+
+    
 }
