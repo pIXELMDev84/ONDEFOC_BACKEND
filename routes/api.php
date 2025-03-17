@@ -14,6 +14,8 @@ use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\BonDeCommandeController;
 use App\Http\Controllers\BonDeReceptionController;
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\BonJournalierController;
+use App\Http\Controllers\ConsommationController;
 
 Route::middleware('auth:sanctum')->get('user', function (Request $request) {
     return $request->user();
@@ -51,7 +53,8 @@ Route::post('/bdrs', [BonDeReceptionController::class, 'store']);
 Route::get('/bdrs/{id}/pdf', [BonDeReceptionController::class, 'telechargerPDF']);
 Route::delete('/supr/bdrs/{id}', [BonDeReceptionController::class, 'destroy']);
 //stock
-Route::get('/stock/{categorieId}', [StockController::class, 'getStockByCategory']);
-
 Route::get('/stock-global', [BonDeReceptionController::class, 'show']);
+// Routes pour la consommation
+Route::post('/update-consommations', [ConsommationController::class, 'store']);
+Route::get('/consommations', [ConsommationController::class, 'index']);
 
