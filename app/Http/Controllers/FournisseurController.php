@@ -31,6 +31,8 @@ class FournisseurController extends Controller
              'email' => 'required|email|unique:fournisseurs,email',
              'num_telephone' => 'required|string',
              'categorie_id' => 'required|exists:categories,id',
+             'adresse' => 'required|string|max:255',
+
          ]);
 
          // Création du fournisseur
@@ -48,6 +50,8 @@ class FournisseurController extends Controller
              'prenom' => 'required|string',
              'num_telephone' => 'required|string',
              'email' => 'required|email|unique:fournisseurs,email,' . $fournisseur->id,
+             'adresse' => 'required|string|max:255',
+
          ]);
 
          $fournisseur->update($request->all());

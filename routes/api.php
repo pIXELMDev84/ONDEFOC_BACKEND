@@ -54,9 +54,9 @@ Route::get('/bdrs/{id}/pdf', [BonDeReceptionController::class, 'telechargerPDF']
 Route::delete('/supr/bdrs/{id}', [BonDeReceptionController::class, 'destroy']);
 //stock
 Route::get('/stock-global', [BonDeReceptionController::class, 'show']);
-// Routes pour la consommation
+// Routes pour la consommation du stock et bon journalier
 Route::post('/create/bons-journaliers', [BonJournalierController::class, 'store']);
-Route::get('/bons-journaliers/{id}', [BonJournalierController::class, 'show']); // Télécharge le PDF
+Route::get('/bons-journaliers/{id}', [BonJournalierController::class, 'show']);
 Route::delete('/bons-journaliers/{id}', [BonJournalierController::class, 'destroy']);
 Route::get('/bons-journaliers', [BonJournalierController::class, 'index']);
 
