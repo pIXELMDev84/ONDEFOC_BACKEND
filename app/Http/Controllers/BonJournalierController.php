@@ -63,16 +63,23 @@ class BonJournalierController extends Controller
     public function show($id)
     {
         $bonJournalier = BonJournalier::with('consommations.produit')->findOrFail($id);
-
-        
-        // Générer le PDF
-        $pdf = PDF::loadView('bons.bon_journalier', compact('bonJournalier'));
-
-        // Télécharger le PDF
+    
+        // Charger et convertir l'image en base64
+        $imagePath = public_path('images/logo.png');
+        if (file_exists($imagePath)) {
+            $type = pathinfo($imagePath, PATHINFO_EXTENSION);
+            $data = file_get_contents($imagePath);
+            $base64Image = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        } else {
+            $base64Image = null; // Si l'image n'existe pas, éviter une erreur
+        }
+    
+        // Générer le PDF avec l'image
+        $pdf = PDF::loadView('bons.bon_journalier', compact('bonJournalier', 'base64Image'));
+    
         return $pdf->download('bon_journalier_'.$bonJournalier->id.'.pdf');
-
-        
     }
+    
 
     public function index()
 {
