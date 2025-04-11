@@ -14,7 +14,17 @@ class BonDeCommandeController extends Controller
     public function produitsParBonDeCommande($id)
 {
     $bonDeCommande = BonDeCommande::with('produits')->findOrFail($id);
-    return response()->json($bonDeCommande->produits);
+    return response()->json($bonDeCommande->produits->map(function ($produit) {
+        return [
+            'id' => $produit->id,
+            'nom' => $produit->produit_name,
+            'quantite' => $produit->quantite,
+            'prix_unitaire' => $produit->prix_unitaire,
+            'tva' => $produit->tva,
+            'unite' => $produit->unite,
+            'prix_total' => $produit->prix_total
+        ];
+    }));
 }
 
     public function index()
